@@ -1,0 +1,40 @@
+#!/usr/bin/bash		
+# source <File Path>
+
+validate(){
+   while true
+    do
+    read -p "$1" firstcol
+    result=$(awk -F: -v var="$firstcol" '
+    BEGIN {found=0}  $1 == var {found=1; exit} END {print found ? "true" : "false"}' "../../DBMS/"$name"/"$Table".txt" )
+    if [[ $2 == 1 ]];then
+     if [[ $result == "true" ]];then
+      echo "this value already exists try again"
+      unset firstcol
+     fi
+    fi 
+    if [[ ${colTypes[$2]} =  "String" ]];then
+      if [[ $firstcol =~ ^[a-zA-Z][a-zA-Z0-9]*$  ]];then 
+        if [[ ! $2 = $colNum ]];then
+          firstcol+=":"
+        fi
+        data+="$firstcol"
+        break
+      else
+      echo "Wrong datatype enter a String please"
+      unset firstcol
+      fi
+    elif [[ ${colTypes[$2]} =  "Integer" ]];then
+      if [[ $firstcol =~ ^[1-9][0-9]*$ ]];then
+          if [[ ! $2 = $colNum ]];then
+            firstcol+=":"
+          fi
+           data+="$firstcol"
+           break
+      fi
+    else
+        echo "Wrong datatype enter an Integer please"
+        unset firstcol
+    fi
+    done
+}

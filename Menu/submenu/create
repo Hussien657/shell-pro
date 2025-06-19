@@ -1,0 +1,59 @@
+#!/usr/bin/bash		
+# source <File Path>
+source ./createHelperFunctions
+
+echo -e "please enter the of name Table and sure make that the name : \n 1)starts with a char \n 2)does not contain any with spaces or spical special character\n"
+read -p "table name :" tname
+$firstline;
+if [[ $tname =~ ^[a-zA-Z][a-zA-Z0-9]*$ ]];then
+        tables=$(ls ../../DBMS/$name)
+        if [[ ! $tables =~ $tname ]];then
+            while true
+            do
+                read -p "number of colums :" columnsNumber
+                echo "note : you can exist anytime buy typing ESC insted of the column numbers"
+                if [[ $columnsNumber =~ ^[1-9][0-9]*$ ]];then
+                    touch ../../DBMS/$name/$tname.txt
+                    echo  -e 'IMPORTANT :\n1). the first column you enter be will considered the primary key automaticlly \n2). the default datatype is string in case you existed  '
+                    
+                    for((i = 1 ;i <= $columnsNumber; i++));
+                        do
+                            read -p "enter the name of column column number $i : " column
+                            while [[ ! $column =~ ^[a-zA-Z][a-zA-Z0-9]*$ ]]; do
+                                echo "column name can't start with a number or or contain special characters"
+                                read -p "enter the name of column column number $i again : " column
+                            done
+                                if [[ $i = $columnsNumber ]];then
+                                    firstline+="$column"
+                                else
+                                    firstline+="$column:"
+                                fi
+                            echo "selcet the datatype of column number $column"
+                                if [[ $i = $columnsNumber ]];then
+                                     selectDataTypeMenu ""
+                                else
+                                     selectDataTypeMenu ":"
+                                fi
+                        done
+                    echo "$firstline" >> ../../DBMS/$name/$tname.txt
+                    echo "$secandline" >> ../../DBMS/$name/$tname.txt
+                    echo "PK" >> ../../DBMS/$name/$tname.txt
+                    echo "table $tname created successfully "
+                    unset firstline
+                    unset secandline
+                    break
+                elif [[ $columnsNumber = "ESC" ]];then
+                    break
+                else
+                    echo "this is not a number try again or tpye ESC to go back to the sub menu"
+                fi
+            done
+        else
+            echo "$tname table already exists"
+        fi
+    else    
+        echo "the name you enterned doesn't match the pattern try agian : "
+        source ./create
+fi
+
+

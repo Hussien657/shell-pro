@@ -1,0 +1,41 @@
+#!/usr/bin/bash		
+# source <File Path>
+PS3="MAIN MENU > "
+while true
+do
+	select option in 'create a database' 'use a database' 'list all databases' 'drop a database' 'exit'
+	do
+		case $option in
+			"create a database")
+				./create
+				break
+				;;
+			"use a database")	
+				./use
+				break
+				;;
+			"list all databases")	
+					echo 'Databases :'
+					echo '--------------'
+					ls ../DBMS
+					echo '--------------'
+					break
+				;;
+			"drop a database")	
+				source ./drop
+				break
+				;;	
+			"exit")	
+				echo 'good bye'
+				break 2
+				;;
+			*)	
+				echo "invalid input "
+				break
+				;;	
+		esac
+	done
+done
+cd ../
+
+
